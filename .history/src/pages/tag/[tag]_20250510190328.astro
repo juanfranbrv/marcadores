@@ -1,0 +1,47 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductGrid from '../../components/ProductGrid.astro';
+import CategorySidebar from '../../components/CategorySidebar.astro';
+import { fetchProductsByTag, fetchTags } from '../../lib/api';
+
+export async function getStaticPaths() {
+  const tags = await fetchTags();
+  return tags.map(tag => ({ params: { tag: tag.name.toLowerCase() } }));
+}
+
+// Get the tag from the URL
+const { tag } = Astro.params;
+
+// Fetch products for this tag
+const products = await fetchProductsByTag(tag || 'all');
+
+// Generate page title
+const tagName = tag?.charAt(0).toUpperCase() + tag?.slice(1) || 'All';
+const title = `#${tagName} Products - 10015`;
+---
+
+<Layout title={title}>
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+    <CategorySidebar />
+
+    <!-- Product Finder Content -->
+    <main class="flex-1 p-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="bg-indigo-100 text-indigo-600 p-2 rounded">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+            </svg>
+          </div>
+          <h1 class="text-2xl font-bold">
+            #{tagName} <span class="text-gray-500 text-lg">Products</span>
+          </h1>
+        </div>
+
+        <ProductGrid products={products} />
+      </div>
+    </main>
+  </div>
+</Layout>

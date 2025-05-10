@@ -1,0 +1,102 @@
+import db from '../../lib/db';
+import type { Product } from "../types/product";
+
+export async function fetchProducts(): Promise<Product[]> {
+  const products = db.prepare(`
+    SELECT p.id, p.title, p.url, p.comment as description, p.image,
+      GROUP_CONCAT(t.name, ',') as tags
+    FROM products p
+    LEFT JOIN product_tags pt ON p.id = pt.product_id
+    LEFT JOIN tags t ON pt.tag_id = t.id
+    GROUP BY p.id
+    ORDER BY p.id
+  `).all();
+
+  return products.map((p: any) => ({
+    ...p,
+    tags: p.tags ? p.tags.split(',') : [],
+    isPaid: false // Dummy, puedes ajustar según tu modelo
+  }));
+}
+
+export async function fetchTags() {
+  return db.prepare('SELECT * FROM tags ORDER BY name').all();
+}
+
+export async function fetchProductsByCategory(category: string): Promise<Product[]> {
+  if (category === "todas") {
+    return fetchProducts();
+  }
+  // Buscar productos que tengan una etiqueta igual al nombre de la categoría
+  const products = db.prepare(`
+    SELECT p.id, p.title, p.url, p.comment as description, p.image,
+      GROUP_CONCAT(t.name, ',') as tags
+    FROM products p
+    LEFT JOIN product_tags pt ON p.id = pt.product_id
+    LEFT JOIN tags t ON pt.tag_id = t.id
+    WHERE LOWER(t.name) = ?
+    GROUP BY p.id
+    ORDER BY p.id
+  `).all(category.toLowerCase());
+  return products.map((p: any) => ({
+    ...p,
+    tags: p.tags ? p.tags.split(',') : [],
+    isPaid: false
+  }));
+}
+
+export async function fetchProductsByTag(tag: string): Promise<Product[]> {
+  if (tag === "todas") {
+    return fetchProducts();
+  }
+  const products = db.prepare(`
+    SELECT p.id, p.title, p.url, p.comment as description, p.image,
+      GROUP_CONCAT(t.name, ',') as tags
+    FROM products p
+    LEFT JOIN product_tags pt ON p.id = pt.product_id
+    LEFT JOIN tags t ON pt.tag_id = t.id
+    WHERE p.id IN (
+      SELECT pt2.product_id
+      FROM product_tags pt2
+      JOIN tags t2 ON pt2.tag_id = t2.id
+      WHERE LOWER(t2.name) = ?
+    )
+    GROUP BY p.id
+    ORDER BY p.id
+  `).all(tag.toLowerCase());
+  return products.map((p: any) => ({
+    ...p,
+    tags: p.tags ? p.tags.split(',') : [],
+    isPaid: false
+  }));
+}
+
+export async function fetchProductsByCategoryAndTag(category: string, tag: string): Promise<Product[]> {
+  if (category === "todas" && tag === "todas") {
+    return fetchProducts();
+  }
+  if (category === "todas") {
+    return fetchProductsByTag(tag);
+  }
+  if (tag === "todas") {
+    return fetchProductsByCategory(category);
+  }
+  // Filtra productos que pertenezcan a la categoría y tengan la etiqueta
+  const products = db.prepare(`
+    SELECT p.id, p.title, p.url, p.comment as description, p.image,
+      GROUP_CONCAT(t2.name, ',') as tags
+    FROM products p
+    LEFT JOIN product_tags pt1 ON p.id = pt1.product_id
+    LEFT JOIN tags t1 ON pt1.tag_id = t1.id
+    LEFT JOIN product_tags pt2 ON p.id = pt2.product_id
+    LEFT JOIN tags t2 ON pt2.tag_id = t2.id
+    WHERE LOWER(t1.name) = ? AND LOWER(t2.name) = ?
+    GROUP BY p.id
+    ORDER BY p.id
+  `).all(category.toLowerCase(), tag.toLowerCase());
+  return products.map((p: any) => ({
+    ...p,
+    tags: p.tags ? p.tags.split(',') : [],
+    isPaid: false
+  }));
+}

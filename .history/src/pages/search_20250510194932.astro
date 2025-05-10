@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import CategorySidebar from '../components/CategorySidebar.astro';
+import { fetchProducts } from '../lib/api';
+
+// Get search query from URL
+const query = Astro.url.searchParams.get('q') || '';
+
+// Fetch all products and filter by search query
+const allProducts = await fetchProducts();
+const products = query 
+  ? allProducts.filter(product => 
+      product.title.toLowerCase().includes(query.toLowerCase()) || 
+      product.description.toLowerCase().includes(query.toLowerCase()) ||
+      product.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+    )
+  : allProducts;
+
+const title = query ? `Search results for "${query}" - 10015` : 'Search - 10015';
+---
+
+<Layout title={title}>
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+    <CategorySidebar />
+
+    <!-- Product Finder Content -->
+    <main class="flex-1 p-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="bg-indigo-100 text-indigo-600 p-2 rounded">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+          <h1 class="text-2xl font-bold">
+            {query ? `Search results for "${query}"` : 'Search'} 
+            <span class="text-gray-500 text-lg">({products.length} products)</span>
+          </h1>
+        </div>
+
+        {products.length > 0 ? (
+          <ProductGrid products={products} />
+        ) : (
+          <div class="text-center py-12">
+            <h2 class="text-xl font-medium text-gray-600">No products found</h2>
+            <p class="mt-2 text-gray-500">Try a different search term or browse categories</p>
+          </div>
+        )}
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  // Handle search form submission
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('input[placeholder="Search Products"]');
+    
+    if (searchInput) {
+      // Set initial value from URL if present
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q');
+      if (query && searchInput instanceof HTMLInputElement) {
+        searchInput.value = query;
+      }
+      
+      // Handle form submission
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && searchInput instanceof HTMLInputElement) {
+          const query = searchInput.value.trim();
+          if (query) {
+            window.location.href = `/search?q=${encodeURIComponent(query)}`;
+          }
+        }
+      });
+    }
+  });
+</script>
