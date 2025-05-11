@@ -46,13 +46,6 @@ export default function ProductGrid() {
     loadProducts()
   }, [accessToken])
 
-  // Guardar el accessToken en localStorage para compartirlo con CategorySidebar
-  useEffect(() => {
-    if (accessToken) {
-      localStorage.setItem("raindrop_access_token", accessToken)
-    }
-  }, [accessToken])
-
   if (!accessToken) {
     return (
       <div className="max-w-md mx-auto mt-10 p-6 bg-white border rounded shadow">
