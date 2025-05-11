@@ -1,6 +1,5 @@
 import db from '../../lib/db';
 import type { Product } from "../types/product";
-import Database from 'better-sqlite3';
 
 export async function fetchBookmarks(): Promise<Product[]> {
   const bookmarks = db.prepare(`
@@ -79,8 +78,7 @@ export async function fetchBookmarksByCollectionAndTag(collection: string, tag: 
 }
 
 export async function fetchCollections() {
-  const db = new Database(process.env.DB_PATH || 'lib/data.db');
+  const db = require('better-sqlite3')(process.env.DB_PATH || 'lib/data.db');
   const collections = db.prepare('SELECT * FROM collections').all();
-  db.close();
   return collections;
 }
