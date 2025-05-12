@@ -9,12 +9,6 @@
   margin-left: 0;
   margin-right: 0;
   align-self: start;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-#bookmarks-grid > a > div:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transform: translateY(-4px);
 }
 
 /* Contenedor del contenido para que crezca y empuje el footer */

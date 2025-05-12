@@ -18,8 +18,8 @@ fetch('../lib/data.json')
 
 function renderSidebar(collections) {
   const sidebar = document.getElementById('sidebar');
-  sidebar.innerHTML = `<div class="mb-4 flex justify-center"><img src="../logoweb1.png" alt="Logo" class="w-full h-auto"/></div>` +
-    `` +
+  sidebar.innerHTML = `<div class="mb-4 flex justify-center"><img src="../logoweb1.png" alt="Logo" class="w-32 h-auto"/></div>` +
+    `<h2 class="text-xl font-semibold mb-4">Categorías</h2>` +
     `<div class="flex flex-col gap-1" id="categories-list">
       <div class="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded font-bold" data-id="all">
         <span class="w-6 h-6 flex items-center justify-center text-xl">🗃️</span>
@@ -127,7 +127,7 @@ function addTagListeners() {
 function updateHeader() {
   const header = document.querySelector('main header h1');
   if (selectedCategory === 'all' || !selectedCategory) {
-    header.textContent = 'Marcadores';
+    header.textContent = 'Marcadores Bauset';
   } else {
     const col = globalData.collections.find(c => c.id === Number(selectedCategory));
     if (selectedTag && selectedTag !== 'all') {
