@@ -1,0 +1,29 @@
+---
+// Get current search query if any
+// Get current search query if any
+// Get current search query if any
+// Get current search query if any
+const currentQuery = Astro.url.searchParams.get('q') || '';
+---
+
+<form action="/search" method="get" class="relative max-w-md w-full">
+  <div class="relative">
+    <input
+      type="text"
+      name="q"
+      placeholder="Search Products"
+      value={currentQuery}
+      class="w-full py-2 pl-10 pr-4 border rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    />
+  </div>
+  <script>
+    const form = document.querySelector('form');
+    if (form) {
+      form.addEventListener('submit', (event) => {
+        const formData = new FormData(form);
+        const formValues = Object.fromEntries(formData);
+        console.log('Form URL:', form.action + '?' + new URLSearchParams(formValues).toString());
+      });
+    }
+  </script>
+</form>

@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import { fetchBookmarks } from '../lib/api';
+
+const { searchParams } = new URL(Astro.request.url);
+const query = searchParams.get('q')?.toLowerCase() || '';
+
+const bookmarks = await fetchBookmarks();
+
+// Filtrar bookmarks por nombre que contenga el término de búsqueda
+const filteredBookmarks = bookmarks.filter(b =>
+  b.name.toLowerCase().includes(query)
+);
+---
+
+<Layout title={`Buscar: ${query}`}>
+  <div class="flex flex-1">
+    <main class="flex-1 p-6">
+      <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">
+          Resultados para: "{query}"
+        </h1>
+        <ProductGrid products={filteredBookmarks} />
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  // Handle search form submission
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('input[placeholder="Search Products"]');
+    
+    if (searchInput) {
+      // Set initial value from URL if present
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q');
+      if (query && searchInput instanceof HTMLInputElement) {
+        searchInput.value = query;
+      }
+      
+      // Handle form submission
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && searchInput instanceof HTMLInputElement) {
+          const query = searchInput.value.trim();
+          if (query) {
+            window.location.href = `/search?q=${encodeURIComponent(query)}`;
+          }
+        }
+      });
+    }
+  });
+</script>

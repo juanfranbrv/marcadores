@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import { fetchBookmarks } from '../lib/api';
+
+const queryParam = Astro.url?.searchParams?.get('q');
+const query = queryParam ? queryParam.toLowerCase() : '';
+
+const bookmarks = await fetchBookmarks();
+
+// Usa 'name' o 'title' según corresponda
+const filteredBookmarks = query
+  ? bookmarks.filter(b => b.title && b.title.toLowerCase().includes(query))
+  : [];
+---
+
+<Layout title={`Buscar: ${query}`}>
+  <div class="flex flex-1">
+    <main class="flex-1 p-6">
+      <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">
+          Resultados para: "{query}"
+        </h1>
+        <p>Valor de queryParam: "{queryParam}"</p>
+        {filteredBookmarks.length > 0 ? (
+          <ProductGrid products={filteredBookmarks} />
+        ) : (
+          <p class="text-gray-500">No se encontraron resultados para tu búsqueda.</p>
+        )}
+      </div>
+    </main>
+  </div>
+</Layout>

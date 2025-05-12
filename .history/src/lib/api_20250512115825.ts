@@ -82,3 +82,21 @@ export async function fetchCollections() {
   const collections = db.prepare('SELECT * FROM collections').all();
   return collections;
 }
+
+export async function fetchBookmarksByTitle(term: string): Promise<Product[]> {
+  if (!term || term.trim() === "") return fetchBookmarks();
+  // Depuración: mostrar el término recibido
+  console.log("Buscando por título:", term);
+  const bookmarks = db.prepare(`
+    LEFT JOIN collections c ON b.collection_id = c.id
+    LEFT JOIN bookmark_tags bt ON b.id = bt.bookmark_id
+    LEFT JOIN tags t ON bt.tag_id = t.id
+    WHERE LOWER(b.title) LIKE LOWER(?)
+    GROUP BY b.id
+  `).all(`%${term}%`);
+  return bookmarks.map((b: any) => ({
+    ...b,
+    tags: b.tags ? b.tags.split(',') : [],
+    collection: b.collection || null,
+  }));
+}

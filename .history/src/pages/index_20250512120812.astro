@@ -2,9 +2,13 @@
 import Layout from '../layouts/Layout.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 import CategorySidebar from '../components/CategorySidebar.astro';
-import { fetchBookmarks } from '../lib/api';
+import { fetchBookmarks, fetchBookmarksByTitle } from '../lib/api';
 
-const bookmarks = await fetchBookmarks();
+// Leer el parámetro de búsqueda de la URL
+const search = Astro.url.searchParams.get('search');
+const bookmarks = search && search.trim() !== ""
+  ? await fetchBookmarksByTitle(search)
+  : await fetchBookmarks();
 ---
 
 <Layout title="Product Finder - 10015">

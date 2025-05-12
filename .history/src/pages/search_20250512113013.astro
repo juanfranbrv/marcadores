@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import { fetchBookmarks } from '../lib/api';
+import SearchQuery from '../components/SearchQuery.astro';
+
+const bookmarks = await fetchBookmarks();
+
+let queryParam = '';
+let query = '';
+
+---
+<SearchQuery queryParam={new URL(Astro.request.url).searchParams.get('q')}>
+  {(data) => {
+    queryParam = data;
+    query = queryParam ? queryParam.toLowerCase() : '';
+  }}
+</SearchQuery>
+
+console.log('Query:', query);
+console.log('Bookmarks:', bookmarks);
+
+const filteredBookmarks = bookmarks.filter(b => {
+  console.log('Bookmark Title:', b.title);
+  const title = b.title ? b.title.toLowerCase() : '';
+  console.log('Lowercase Title:', title);
+  const includesQuery = title.includes(query);
+  console.log('Includes Query:', includesQuery);
+  return includesQuery;
+});
+
+console.log('Filtered Bookmarks:', filteredBookmarks);
+---
+
+<Layout title={`Buscar: ${query}`}>
+  <div class="flex flex-1">
+    <main class="flex-1 p-6">
+      <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">
+          Resultados para: "{query}"
+        </h1>
+        <p>Valor de queryParam: "{queryParam}"</p>
+        <p>Todos los Bookmarks: {JSON.stringify(bookmarks)}</p>
+        <p>Bookmarks Filtrados: {JSON.stringify(filteredBookmarks)}</p>
+        {filteredBookmarks.length > 0 ? (
+          <ProductGrid products={filteredBookmarks} />
+        ) : (
+          <p class="text-gray-500">No se encontraron resultados para tu búsqueda.</p>
+        )}
+      </div>
+    </main>
+  </div>
+</Layout>

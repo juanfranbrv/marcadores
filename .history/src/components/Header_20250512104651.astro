@@ -1,4 +1,5 @@
 ---
+import { Search } from 'lucide-react';
 ---
 
 <header class="border-b sticky top-0 bg-white z-10">
@@ -14,6 +15,18 @@
       </a>
     </div>
 
+    <div class="relative max-w-md w-full mx-4">
+      <div class="flex items-center gap-2">
+        <Search class="text-gray-400 h-5 w-5" />
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Search Products"
+          class="w-full py-2 px-4 border rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          onkeydown="if(event.key==='Enter'){window.location.href='/search?q='+encodeURIComponent(this.value)}"
+        />
+      </div>
+    </div>
 
     <div class="flex items-center gap-3">
       {/* Botones eliminados, no se muestra nada aquí */}

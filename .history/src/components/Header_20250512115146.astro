@@ -1,4 +1,5 @@
 ---
+import { Search } from 'lucide-react';
 ---
 
 <header class="border-b sticky top-0 bg-white z-10">
@@ -12,6 +13,18 @@
         </div>
         <span class="font-bold text-xl">10015</span>
       </a>
+      <form method="GET" action="/" class="flex items-center gap-2 ml-4">
+        <input
+          type="text"
+          name="search"
+          placeholder="Buscar..."
+          value={Astro.url.searchParams.get('search') || ''}
+          class="border rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        <button type="submit" class="p-1">
+          <Search class="w-5 h-5 text-gray-500" />
+        </button>
+      </form>
     </div>
 
 

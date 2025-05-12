@@ -4,6 +4,7 @@ import ProductGrid from '../components/ProductGrid.astro';
 import CategorySidebar from '../components/CategorySidebar.astro';
 import { fetchBookmarks } from '../lib/api';
 
+// Fetch all products at build time
 const bookmarks = await fetchBookmarks();
 ---
 
@@ -28,6 +29,7 @@ const bookmarks = await fetchBookmarks();
 
         <ProductGrid products={bookmarks} />
       </div>
+      <SearchForm />
     </main>
   </div>
 </Layout>

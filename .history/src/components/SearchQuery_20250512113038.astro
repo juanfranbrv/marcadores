@@ -1,0 +1,29 @@
+---
+---
+import { fetchBookmarks } from '../lib/api';
+
+interface Props {
+  queryParam: string | null;
+}
+
+const { queryParam } = Astro.props;
+const query = queryParam ? queryParam.toLowerCase() : '';
+
+const bookmarks = await fetchBookmarks();
+
+console.log('Query:', query);
+console.log('Bookmarks:', bookmarks);
+
+const filteredBookmarks = bookmarks.filter(b => {
+  console.log('Bookmark Title:', b.title);
+  const title = b.title ? b.title.toLowerCase() : '';
+  console.log('Lowercase Title:', title);
+  const includesQuery = title.includes(query);
+  console.log('Includes Query:', includesQuery);
+  return includesQuery;
+});
+
+console.log('Filtered Bookmarks:', filteredBookmarks);
+---
+
+<>{JSON.stringify(filteredBookmarks)}</>

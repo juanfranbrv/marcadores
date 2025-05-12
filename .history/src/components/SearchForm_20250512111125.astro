@@ -1,13 +1,10 @@
 ---
-import { Search } from 'astro-icon/lucide';
-
 // Get current search query if any
 const currentQuery = Astro.url.searchParams.get('q') || '';
 ---
 
 <form action="/search" method="get" class="relative max-w-md w-full">
   <div class="relative">
-    <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
     <input
       type="text"
       name="q"
