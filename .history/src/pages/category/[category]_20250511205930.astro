@@ -2,22 +2,20 @@
 import Layout from '../../layouts/Layout.astro';
 import ProductGrid from '../../components/ProductGrid.astro';
 import CategorySidebar from '../../components/CategorySidebar.astro';
-import { fetchBookmarksByTag, fetchTags } from '../../lib/api';
+import { fetchBookmarksByCollection, fetchTags } from '../../lib/api';
 
 export async function getStaticPaths() {
   const tags = await fetchTags();
-  return tags.map(tag => ({ params: { tag: tag.name.toLowerCase() } })).concat([{ params: { tag: 'todas' } }]);
+  return [
+    { params: { category: 'todas' } },
+    ...tags.map(tag => ({ params: { category: tag.name.toLowerCase() } }))
+  ];
 }
 
-// Get the tag from the URL
-const { tag } = Astro.params;
-
-// Fetch products for this tag
-const products = await fetchBookmarksByTag(tag || 'todas');
-
-// Generate page title
-const tagName = tag?.charAt(0).toUpperCase() + tag?.slice(1) || 'Todas';
-const title = `#${tagName} Productos - 10015`;
+const { category } = Astro.params;
+const bookmarks = await fetchBookmarksByCollection(category || 'todas');
+const categoryName = category?.charAt(0).toUpperCase() + category?.slice(1) || 'Todas';
+const title = `${categoryName} Productos - 10015`;
 ---
 
 <Layout title={title}>
@@ -36,11 +34,11 @@ const title = `#${tagName} Productos - 10015`;
             </svg>
           </div>
           <h1 class="text-2xl font-bold">
-            #{tagName} <span class="text-gray-500 text-lg">Productos</span>
+            {categoryName} <span class="text-gray-500 text-lg">Productos</span>
           </h1>
         </div>
 
-        <ProductGrid products={products} />
+        <ProductGrid products={bookmarks} />
       </div>
     </main>
   </div>

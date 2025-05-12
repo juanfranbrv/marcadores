@@ -6,21 +6,12 @@ import { fetchBookmarksByCollection, fetchTags, fetchCollections } from '../../l
 
 export async function getStaticPaths() {
   const collections = await fetchCollections();
-  const categoriesForPaths = ['todas', ...collections.map(col => col.title.toLowerCase())];
-  return categoriesForPaths.map(category => ({
+  const categories = ['todas', ...collections.map(col => col.title.toLowerCase())];
+  
+  return categories.map(category => ({
     params: { category },
   }));
 }
-
-const collections = await fetchCollections();
-const categories = [
-  { id: "todas", name: "Todas", icon: null },
-  ...collections.map(col => ({
-    id: col.title.toLowerCase(),
-    name: col.title,
-    icon: col.icon
-  }))
-];
 
 const { category } = Astro.params;
 const bookmarks = await fetchBookmarksByCollection(category || 'todas');

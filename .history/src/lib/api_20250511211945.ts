@@ -68,7 +68,7 @@ export async function fetchBookmarksByCollectionAndTag(collection: string, tag: 
     LEFT JOIN collections c ON b.collection_id = c.id
     LEFT JOIN bookmark_tags bt ON b.id = bt.bookmark_id
     LEFT JOIN tags t ON bt.tag_id = t.id
-    WHERE LOWER(c.title) = LOWER(?) AND LOWER(t.name) = LOWER(?)
+    WHERE c.title = ? AND t.name = ?
     GROUP BY b.id
   `).all(collection, tag);
   return bookmarks.map((b: any) => ({

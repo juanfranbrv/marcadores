@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import ProductGrid from '../../components/ProductGrid.astro';
 import CategorySidebar from '../../components/CategorySidebar.astro';
-import { fetchBookmarksByTag, fetchTags } from '../../lib/api';
+import { fetchProductsByTag, fetchTags } from '../../lib/api';
 
 export async function getStaticPaths() {
   const tags = await fetchTags();
@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 const { tag } = Astro.params;
 
 // Fetch products for this tag
-const products = await fetchBookmarksByTag(tag || 'todas');
+const products = await fetchProductsByTag(tag || 'todas');
 
 // Generate page title
 const tagName = tag?.charAt(0).toUpperCase() + tag?.slice(1) || 'Todas';

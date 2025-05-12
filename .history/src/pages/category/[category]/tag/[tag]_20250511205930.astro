@@ -1,0 +1,49 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import ProductGrid from '../../../../components/ProductGrid.astro';
+import CategorySidebar from '../../../../components/CategorySidebar.astro';
+import { fetchBookmarksByCollectionAndTag, fetchTags } from '../../../../lib/api';
+
+export async function getStaticPaths() {
+  const tags = await fetchTags();
+  const categories = [
+    'todas',
+    'productivity', 'development', 'design', 'marketing', 'business', 'finance', 'ai', 'social media', 'lifestyle'
+  ];
+  const paths: { params: { category: string; tag: string } }[] = [];
+  for (const category of categories) {
+    for (const tag of tags) {
+      paths.push({ params: { category: String(category).toLowerCase(), tag: String(tag.name).toLowerCase() } });
+    }
+    // Agregar ruta para 'todas' en tags
+    paths.push({ params: { category: String(category).toLowerCase(), tag: 'todas' } });
+  }
+  return paths;
+}
+
+const { category, tag } = Astro.params as { category: string; tag: string };
+const bookmarks = await fetchBookmarksByCollectionAndTag(category, tag);
+const title = `${(category || '').charAt(0).toUpperCase() + (category || '').slice(1)} - #${(tag || '').charAt(0).toUpperCase() + (tag || '').slice(1)} Productos`;
+---
+
+<Layout title={title}>
+  <div class="flex flex-1">
+    <CategorySidebar />
+    <main class="flex-1 p-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="bg-indigo-100 text-indigo-600 p-2 rounded">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+            </svg>
+          </div>
+          <h1 class="text-2xl font-bold">
+            {title}
+          </h1>
+        </div>
+        <ProductGrid products={bookmarks} />
+      </div>
+    </main>
+  </div>
+</Layout>

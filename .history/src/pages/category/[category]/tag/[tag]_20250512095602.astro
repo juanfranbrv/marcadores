@@ -34,17 +34,8 @@ export async function getStaticPaths() {
 
 const { category, tag } = Astro.params as { category: string; tag: string };
 const bookmarks = await fetchBookmarksByCollectionAndTag(category, tag);
-const collections = await fetchCollections();
-const categories = [
-  { id: "todas", name: "Todas", icon: null },
-  ...collections.map(col => ({
-    id: col.title.toLowerCase(),
-    name: col.title,
-    icon: col.icon
-  }))
-];
 const categoryName = (category || '').charAt(0).toUpperCase() + (category || '').slice(1);
-const title = `${categoryName}${tag ? ` #${tag.charAt(0).toUpperCase() + tag.slice(1)}` : ''}`;
+const title = `${categoryName}${tag ? ` - #${tag.charAt(0).toUpperCase() + tag.slice(1)}` : ''}`;
 ---
 
 <Layout title={title}>
@@ -54,17 +45,13 @@ const title = `${categoryName}${tag ? ` #${tag.charAt(0).toUpperCase() + tag.sli
       <div class="max-w-7xl mx-auto">
         <div class="flex items-center gap-3 mb-6">
           <div class="bg-indigo-100 text-indigo-600 p-2 rounded">
-            {Astro.params?.category && Astro.params.category !== 'todas' && categories.find(c => c.id === Astro.params.category && c.icon) ? (
-              <img src={categories.find(c => c.id === Astro.params.category).icon} width="24" height="24" class="h-6 w-6 object-cover" alt="Icono categoría" />
-            ) : (
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
-                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-              </svg>
-            )}
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+            </svg>
           </div>
           <h1 class="text-2xl font-bold">
-            {categoryName}{tag ? ` #${tag.charAt(0).toUpperCase() + tag.slice(1)}` : ''}
+            {categoryName}{tag ? ` - #${tag.charAt(0).toUpperCase() + tag.slice(1)}` : ''}
           </h1>
         </div>
         <ProductGrid products={bookmarks} />

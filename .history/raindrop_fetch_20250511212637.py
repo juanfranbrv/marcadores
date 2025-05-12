@@ -150,7 +150,6 @@ def get_bookmarks(access_token):
     data = resp.json()
     collections_url = "https://api.raindrop.io/rest/v1/collections"
     collections_resp = requests.get(collections_url, headers=headers)
-    print("Datos de colecciones:", collections_resp.json())  # Añadir esta línea para depurar
     if collections_resp.status_code != 200:
         print("Error al obtener colecciones:", collections_resp.text)
         sys.exit(1)
@@ -160,11 +159,7 @@ def get_bookmarks(access_token):
         col_id = col.get("_id")
         title = col.get("title", "")
         color = col.get("color", None)
-        # Corregimos la forma de obtener el icono
-        cover_list = col.get("cover", [])
-        icon = cover_list[0] if cover_list else None
-        if icon and isinstance(icon, str):
-            icon = icon.strip('` ')  # Eliminar backticks y espacios
+        icon = col.get("cover", None)  # Cambiado de 'icon' a 'cover'
         cur.execute("INSERT INTO collections (id, title, color, icon) VALUES (?, ?, ?, ?)", (col_id, title, color, icon))
     conn.commit()
     # Insertar marcadores y etiquetas

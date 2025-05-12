@@ -160,11 +160,7 @@ def get_bookmarks(access_token):
         col_id = col.get("_id")
         title = col.get("title", "")
         color = col.get("color", None)
-        # Corregimos la forma de obtener el icono
-        cover_list = col.get("cover", [])
-        icon = cover_list[0] if cover_list else None
-        if icon and isinstance(icon, str):
-            icon = icon.strip('` ')  # Eliminar backticks y espacios
+        icon = col.get("cover", {}).get("icon", None)  # Para estructuras anidadas
         cur.execute("INSERT INTO collections (id, title, color, icon) VALUES (?, ?, ?, ?)", (col_id, title, color, icon))
     conn.commit()
     # Insertar marcadores y etiquetas

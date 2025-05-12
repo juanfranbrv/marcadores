@@ -4,14 +4,6 @@ import ProductGrid from '../../components/ProductGrid.astro';
 import CategorySidebar from '../../components/CategorySidebar.astro';
 import { fetchBookmarksByCollection, fetchTags, fetchCollections } from '../../lib/api';
 
-export async function getStaticPaths() {
-  const collections = await fetchCollections();
-  const categoriesForPaths = ['todas', ...collections.map(col => col.title.toLowerCase())];
-  return categoriesForPaths.map(category => ({
-    params: { category },
-  }));
-}
-
 const collections = await fetchCollections();
 const categories = [
   { id: "todas", name: "Todas", icon: null },
@@ -21,6 +13,13 @@ const categories = [
     icon: col.icon
   }))
 ];
+
+export async function getStaticPaths() {
+  const categoriesForPaths = ['todas', ...collections.map(col => col.title.toLowerCase())];
+  return categoriesForPaths.map(category => ({
+    params: { category },
+  }));
+}
 
 const { category } = Astro.params;
 const bookmarks = await fetchBookmarksByCollection(category || 'todas');
