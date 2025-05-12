@@ -1,0 +1,112 @@
+// Copia de data.json para la versión vanilla
+// Puedes actualizar este archivo manualmente si cambian los datos
+{
+  "collections": [
+    {
+      "id": 55217523,
+      "title": "IA",
+      "color": "#4da3e1",
+      "icon": "https://up.raindrop.io/collection/thumbs/552/175/23/3d394c0578d8e5e9d6d43dfd9644b22c.png"
+    },
+    {
+      "id": 55217939,
+      "title": "Tipos",
+      "color": "#9c24b3",
+      "icon": "https://up.raindrop.io/collection/thumbs/552/179/39/e45fc93f3bc35654470f9a0670bea428.png"
+    }
+  ],
+  "bookmarks": [
+    {
+      "id": 1038077608,
+      "title": "DeepSeek",
+      "url": "https://chat.deepseek.com/",
+      "comment": "Chat with DeepSeek AI.",
+      "image": "https://chat.deepseek.com/deepseek-chat.jpeg",
+      "created_at": "2025-05-11T18:22:47.453Z",
+      "collection_id": 55217523
+    },
+    {
+      "id": 1038006301,
+      "title": "Claude",
+      "url": "https://claude.ai/new",
+      "comment": "Talk with Claude, an AI assistant from Anthropic",
+      "image": "https://claude.ai/images/claude_ogimage.png",
+      "created_at": "2025-05-11T15:57:09.082Z",
+      "collection_id": 55217523
+    },
+    {
+      "id": 1037998177,
+      "title": "1001 Fonts",
+      "url": "https://www.1001fonts.com/",
+      "comment": "80924 free fonts in 46058 families · Free licenses for commercial use · Direct font downloads · Mac · Windows · Linux",
+      "image": "https://st.1001fonts.net/img/illustrations/c/h/charming-spring-font-1-large.png",
+      "created_at": "2025-05-11T15:24:38.174Z",
+      "collection_id": 55217939
+    },
+    {
+      "id": 1037998034,
+      "title": "DaFont - Descargar fuentes",
+      "url": "https://www.dafont.com/es/",
+      "comment": "Archivo de fuentes de descarga gratuita. Búsqueda por orden alfabético, por estilo, por autor o por popularidad.",
+      "image": "https://rdl.ink/render/https%3A%2F%2Fwww.dafont.com%2Fes%2F",
+      "created_at": "2025-05-11T15:23:47.778Z",
+      "collection_id": 55217939
+    },
+    {
+      "id": 1037990482,
+      "title": "‎Gemini",
+      "url": "https://gemini.google.com/app",
+      "comment": "Bard is now Gemini. Get help with writing, planning, learning, and more from Google AI.",
+      "image": "https://www.gstatic.com/lamda/images/gemini_thumbnail_c362e5eadc46ca9f617e2.png",
+      "created_at": "2025-05-11T15:10:56.844Z",
+      "collection_id": 55217523
+    },
+    {
+      "id": 1037990446,
+      "title": "ChatGPT",
+      "url": "https://chatgpt.com/",
+      "comment": "A conversational AI system that listens, learns, and challenges",
+      "image": "https://cdn.oaistatic.com/assets/chatgpt-share-og-u7j5uyao.webp",
+      "created_at": "2025-05-11T15:10:45.804Z",
+      "collection_id": 55217523
+    }
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "name": "texto",
+      "icon": "Hash"
+    },
+    {
+      "id": 2,
+      "name": "imagen",
+      "icon": "Hash"
+    }
+  ],
+  "bookmark_tags": [
+    {
+      "bookmark_id": 1038077608,
+      "tag_id": 1
+    },
+    {
+      "bookmark_id": 1038006301,
+      "tag_id": 1
+    },
+    {
+      "bookmark_id": 1037990482,
+      "tag_id": 1
+    },
+    {
+      "bookmark_id": 1037990482,
+      "tag_id": 2
+    },
+    {
+      "bookmark_id": 1037990446,
+      "tag_id": 1
+    },
+    {
+      "bookmark_id": 1037990446,
+      "tag_id": 2
+    }
+  ]
+}

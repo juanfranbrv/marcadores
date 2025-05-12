@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marcadores - Vanilla</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white border-r p-4 flex flex-col fixed top-0 left-0 h-screen z-10"></aside>
+    <!-- Main Content -->
+    <main class="flex-1 p-6 pl-72">
+      <header class="mb-6">
+        <h1 class="text-3xl font-bold">Marcadores</h1>
+      </header>
+      <section id="tags" class="mb-4 flex flex-wrap gap-2"></section>
+      <section id="bookmarks-grid" class="grid gap-6 grid-cols-[repeat(auto-fit,minmax(260px,320px))]"></section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
