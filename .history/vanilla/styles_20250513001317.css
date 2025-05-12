@@ -5,9 +5,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 320px; /* Limitar ancho máximo para evitar que crezcan demasiado */
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* Contenedor del contenido para que crezca y empuje el footer */
